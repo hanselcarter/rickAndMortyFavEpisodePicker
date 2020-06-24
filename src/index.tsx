@@ -2,20 +2,23 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./components/App";
 import { StoreProvider } from "./Store";
+import HomePage from "./components/HomePage";
+import FavePage from "./components/FavePage";
+import { Router, RouteComponentProps } from "@reach/router";
 
-// export default function App(): JSX.Element {
-//   return (
-//     <>
-//       <h1>Rick and Morty</h1>
-//     </>
-//   );
-// }
-
+const RouterPage = (
+  props: { pageComponent: JSX.Element } & RouteComponentProps
+) => props.pageComponent;
 const root = document.getElementById("app-root");
 
 ReactDOM.render(
   <StoreProvider>
-    <App />
+    <Router>
+      <App path="/">
+        <RouterPage pageComponent={<HomePage />} path="/" />
+        <RouterPage pageComponent={<FavePage />} path="/faves" />
+      </App>
+    </Router>
   </StoreProvider>,
   root
 );

@@ -1,26 +1,26 @@
 import React from "react";
 import { Store } from "../Store";
 
-export default function App(): JSX.Element {
-  const { state, dispatch } = React.useContext(Store);
+import { Link } from "@reach/router";
 
-  React.useEffect(() => {
-    state.episodes.length === 0 && fetchDataAction();
-  }, []);
-  console.log(state.episodes);
-  const fetchDataAction = async () => {
-    const URL =
-      "https://api.tvmaze.com/singlesearch/shows?q=rick-&-morty&embed=episodes";
-    const data = await fetch(URL);
-    const dataJson = await data.json();
-    return dispatch({
-      type: "FETCH_DATA",
-      payload: dataJson._embedded.episodes,
-    });
-  };
+const EpisodesList = React.lazy<any>(() => import("./EpisodesList"));
+
+export default function App(props: any): JSX.Element {
+  const { state } = React.useContext(Store);
+
   return (
     <>
-      <h1>Rick and Morty</h1>
+      <header>
+        <div>
+          <h1>Rick and Morty</h1>
+          <h4>pick you favorite episode</h4>
+        </div>
+        <div>
+          <Link to="/">Home</Link>
+          <Link to="/faves"> Favourites(S): {state.favourites.length}</Link>
+        </div>
+        {props.children}
+      </header>
     </>
   );
 }
